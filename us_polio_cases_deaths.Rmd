@@ -1,0 +1,55 @@
+---
+title: "US Polio Case and Deaths by Year"
+author: "David Jackson"
+date: "11/15/2020"
+output: 
+  html_document: 
+    fig_width: 9
+    fig_height: 7
+---
+
+```{r setup, include=FALSE,error=FALSE,message=FALSE,warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(scales)
+library(plotly)
+theme_set(theme_linedraw())
+```
+
+### US Polio Cases and Deaths by Year
+#### Source: https://ourworldindata.org/polio
+* Since 1979, no cases of polio have originated in the U.S.
+* However, the virus has been brought into the country by travelers with polio. The last time this happened was in 1993
+
+```{r}
+polio_numbs <- read.csv("./polio-cases-and-deaths.csv")
+polio_numbs <- subset(polio_numbs,Year <=1979)
+sum(polio_numbs$Cases)
+sum(na.omit(polio_numbs$Deaths))
+```
+```{r}
+plot1 <-ggplot(polio_numbs,aes(x=Year,y=Cases)) +
+  geom_col() + geom_smooth(span=0.25) +
+  labs(title="US Polio Cases: 1910 - 1979")
+
+plot2 <-ggplot(polio_numbs,aes(x=Year,y=Deaths)) + 
+  geom_col() + geom_smooth(span=0.25) +
+  labs(title="US Polio Deaths: 1910 - 1979")
+ggplotly(plot1)
+ggplotly(plot2)
+```
+### Polio Cases and Deaths: 1950 - 1970
+
+```{r}
+polio_numbs1 <- subset(polio_numbs,Year >=1950 & Year <=1979)
+plot3 <-ggplot(polio_numbs1,aes(x=Year,y=Cases)) +
+  geom_col() + geom_smooth(span=0.25) +
+  labs(title="US Polio Cases: 1950 - 1979")
+
+plot4 <- ggplot(polio_numbs1,aes(x=Year,y=Deaths)) + 
+  geom_col() + geom_smooth(span=0.25) +
+  labs(title="US Polio Deaths: 1950 - 1979")
+ggplotly(plot4)
+ggplotly(plot3)
+```
+
